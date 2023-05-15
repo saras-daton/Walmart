@@ -1,0 +1,205 @@
+#WalmartMarketplace
+version: 2
+models:
+  - name: WalmartBuyBoxReport
+    config:
+      materialized: incremental
+      incremental_strategy: merge
+      unique_key: ['ReportDate','Seller_Id', 'Sku', 'Item_ID']
+      partition_by: { 'field': 'ReportDate', 'data_type': 'date' }
+      cluster_by: ['Seller_Id', 'Sku', 'Item_ID'] 
+
+  - name: WalmartInventory
+    config:
+      materialized: incremental
+      incremental_strategy: merge
+      unique_key: ['sku']
+      cluster_by: ['sku'] 
+
+  - name: WalmartInventoryReportOnRequest
+    config:
+      materialized: incremental
+      incremental_strategy: merge
+      unique_key: ['SKU']
+      partition_by: { 'field': 'ReportDateTime', 'data_type': 'timestamp', 'granularity': 'day' }
+      cluster_by: ['SKU'] 
+
+  - name: WalmartItemPerformanceReport
+    config:
+      materialized: incremental
+      incremental_strategy: merge
+      unique_key: ['ITEM_ID','SKU_ID']
+      partition_by: { 'field': 'ReportDate', 'data_type': 'date' }
+      cluster_by: ['ITEM_ID','SKU_ID'] 
+
+  - name: WalmartItemReport
+    config:
+      materialized: incremental
+      incremental_strategy: merge
+      unique_key: ['ITEM_ID','SKU']
+      partition_by: { 'field': 'ReportDate', 'data_type': 'date' }
+      cluster_by: ['ITEM_ID','SKU'] 
+
+  - name: WalmartOrders
+    config:
+      materialized: incremental
+      incremental_strategy: merge
+      unique_key: ['purchaseOrderId', 'customerOrderId', 'lineNumber', 'chargeType', 'sku','orderDate','productName']
+      partition_by: { 'field': 'orderDate', 'data_type': 'date' }
+      cluster_by: ['purchaseOrderId', 'customerOrderId', 'chargeType', 'sku'] 
+
+  - name: WalmartPromotionsReport
+    config:
+      materialized: incremental
+      incremental_strategy: merge
+      unique_key: ['Partner_ID','Item_ID','SKU']
+      partition_by: { 'field': 'ReportDate', 'data_type': 'date' }
+      cluster_by: ['Partner_ID','Item_ID','SKU'] 
+
+  - name: WalmartReconciliationReport
+    config:
+      materialized: incremental
+      incremental_strategy: merge
+      unique_key: ['Walmart_dot_com_PO__hash','Walmart_dot_com_P_dot_O_dot__Line__hash','Transaction_Type','Adjustment_Code']
+      partition_by: { 'field': 'ReportDate', 'data_type': 'date' }
+      cluster_by: ['Walmart_dot_com_PO__hash','Walmart_dot_com_P_dot_O_dot__Line__hash','Transaction_Type','Adjustment_Code'] 
+
+  - name: WalmartReturns
+    config:
+      materialized: incremental
+      incremental_strategy: merge
+      unique_key: ['returnOrderId', 'customerOrderId']
+      partition_by: { 'field': 'returnOrderDate', 'data_type': 'date' }
+      cluster_by: ['returnOrderId', 'customerOrderId'] 
+
+  - name: WalmartReturnsOrderLines
+    config:
+      materialized: incremental
+      incremental_strategy: merge
+      unique_key: ['returnOrderId', 'customerOrderId', 'chargeTotals_name']
+      partition_by: { 'field': 'returnOrderDate', 'data_type': 'date' }
+      cluster_by: ['returnOrderId', 'customerOrderId', 'chargeTotals_name'] 
+
+  - name: WalmartCAPReport
+    config:
+      materialized: incremental
+      incremental_strategy: merge
+      unique_key: ['SKU']
+      partition_by: { 'field': 'ReportDate', 'data_type': 'date' }
+      cluster_by: ['SKU'] 
+
+  - name: WalmartCPAReportOnRequest
+    config:
+      materialized: incremental
+      incremental_strategy: merge
+      unique_key: ['SKU']
+      cluster_by: ['SKU'] 
+
+  - name: WalmartCancellationReportOnRequest
+    config:
+      materialized: incremental
+      incremental_strategy: merge
+      unique_key: ['TrackingNum','CatlgItemId']
+      partition_by: { 'field': 'ReportDate', 'data_type': 'date' }
+      cluster_by: ['OrderPlacedDt','TrackingNum','CatlgItemId'] 
+
+  - name: WalmartDeliveryDefectReportOnRequest
+    config:
+      materialized: incremental
+      incremental_strategy: merge
+      unique_key: ['TrackingNum','CatlgItemId']
+      partition_by: { 'field': 'ReportDate', 'data_type': 'date' }
+      cluster_by: ['OrderPlacedDt','TrackingNum','CatlgItemId'] 
+
+  - name: WalmartItemReportOnRequest
+    config:
+      materialized: incremental
+      incremental_strategy: merge
+      unique_key: ['Item_ID','SKU']
+      partition_by: { 'field': 'Item_Creation_Date', 'data_type': 'date' }
+      cluster_by: ['Item_ID','SKU'] 
+
+  - name: WalmartItemPerformanceReportOnRequest
+    config:
+      materialized: incremental
+      incremental_strategy: merge
+      unique_key: ['Item_ID','SKU_ID']
+      partition_by: { 'field': 'ReportDate', 'data_type': 'date' }
+      cluster_by: ['Item_ID','SKU_ID'] 
+
+  - name: WalmartPromoReportOnRequest
+    config:
+      materialized: incremental
+      incremental_strategy: merge
+      unique_key: ['Item_ID','SKU']
+      partition_by: { 'field': 'ReportDate', 'data_type': 'date' }
+      cluster_by: ['Item_ID','SKU'] 
+
+  - name: WalmartReturnItemOverridesReport
+    config:
+      materialized: incremental
+      incremental_strategy: merge
+      unique_key: ['partnerId','SKU']
+      partition_by: { 'field': 'ReportDate', 'data_type': 'date' }
+      cluster_by: ['partnerId','SKU'] 
+
+  - name: WalmartReturnOverridesReportOnRequest
+    config:
+      materialized: incremental
+      incremental_strategy: merge
+      unique_key: ['SKU']
+      cluster_by: ['SKU'] 
+
+  - name: WalmartShippingConfigurationReport
+    config:
+      materialized: incremental
+      incremental_strategy: merge
+      unique_key: ['Item_ID','SKU']
+      partition_by: { 'field': 'ReportDate', 'data_type': 'date' }
+      cluster_by: ['Item_ID','SKU'] 
+
+  - name: WalmartShippingConfigurationReportOnRequest
+    config:
+      materialized: incremental
+      incremental_strategy: merge
+      unique_key: ['Item_ID','SKU']
+      cluster_by: ['Item_ID','SKU'] 
+
+  - name: WalmartShippingProgramReport
+    config:
+      materialized: incremental
+      incremental_strategy: merge
+      unique_key: ['Item_ID','SKU']
+      partition_by: { 'field': 'ReportDate', 'data_type': 'date' }
+      cluster_by: ['Item_ID','SKU'] 
+
+  - name: WalmartShippingProgramReportOnRequest
+    config:
+      materialized: incremental
+      incremental_strategy: merge
+      unique_key: ['Item_ID','SKU']
+      cluster_by: ['Item_ID','SKU'] 
+
+  - name: WalmartTopTrendingItemsReport
+    config:
+      materialized: incremental
+      incremental_strategy: merge
+      unique_key: ['DepartmentId','itemId']
+      partition_by: { 'field': 'ReportDate', 'data_type': 'date' }
+      cluster_by: ['DepartmentId','itemId'] 
+
+  - name: WalmartUnpublishedItemsReport
+    config:
+      materialized: incremental
+      incremental_strategy: merge
+      unique_key: ['itemId','sku']
+      partition_by: { 'field': 'offerStartDate', 'data_type': 'date' }
+      cluster_by: ['itemId','sku'] 
+
+  - name: WalmartWFSInventory
+    config:
+      materialized: incremental
+      incremental_strategy: merge
+      unique_key: ['sku']
+      partition_by: { 'field': 'modifiedDate', 'data_type': 'date' }
+      cluster_by: ['sku'] 
