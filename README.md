@@ -23,7 +23,7 @@ As part of Data Unification, the following functions are performed:
 
 #### Prerequisite 
 Daton Integrations for  
-- Amazon DSP 
+- Walmart
 - Exchange Rates (Optional, if currency conversion is not required)
 
 
